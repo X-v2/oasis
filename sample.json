@@ -1,0 +1,109 @@
+{
+  "meta": {
+    "unit": "meter",
+    "wallHeight": 3,
+    "defaultWallThickness": 0.2
+  },
+
+  "rooms": [
+    {
+      "id": "r1",
+      "name": "Living Room",
+      "polygon": [[0,4], [6,4], [6,8], [0,8]]
+    },
+    {
+      "id": "r2",
+      "name": "Bedroom 1",
+      "polygon": [[6,4], [10,4], [10,8], [6,8]]
+    },
+    {
+      "id": "r3",
+      "name": "Bedroom 2",
+      "polygon": [[0,0], [6,0], [6,4], [0,4]]
+    },
+    {
+      "id": "r4",
+      "name": "Kitchen",
+      "polygon": [[6,0], [8,0], [8,4], [6,4]]
+    },
+    {
+      "id": "r5",
+      "name": "Bath",
+      "polygon": [[8,0], [10,0], [10,4], [8,4]]
+    }
+  ],
+
+  "walls": [
+    { "id": "w1", "start": [0,0], "end": [10,0], "type": "outer" },
+    { "id": "w2", "start": [10,0], "end": [10,8], "type": "outer" },
+    { "id": "w3", "start": [10,8], "end": [0,8], "type": "outer" },
+    { "id": "w4", "start": [0,8], "end": [0,0], "type": "outer" },
+
+    { "id": "w5", "start": [6,0], "end": [6,8], "type": "partition" },
+    { "id": "w6", "start": [0,4], "end": [10,4], "type": "partition" },
+
+    { "id": "w7", "start": [8,0], "end": [8,4], "type": "partition" }
+  ],
+
+  "doors": [
+    {
+      "id": "d1",
+      "wallId": "w5",
+      "offset": 5,
+      "width": 1,
+      "height": 2.1,
+      "swing": "left"
+    },
+    {
+      "id": "d2",
+      "wallId": "w6",
+      "offset": 6,
+      "width": 1,
+      "height": 2.1,
+      "swing": "right"
+    },
+    {
+      "id": "d3",
+      "wallId": "w7",
+      "offset": 1.5,
+      "width": 0.9,
+      "height": 2.1,
+      "swing": "left"
+    }
+  ],
+
+  "windows": [
+    {
+      "id": "win1",
+      "wallId": "w3",
+      "offset": 2,
+      "width": 1.5,
+      "height": 1.2,
+      "sillHeight": 1
+    },
+    {
+      "id": "win2",
+      "wallId": "w3",
+      "offset": 7,
+      "width": 1.5,
+      "height": 1.2,
+      "sillHeight": 1
+    },
+    {
+      "id": "win3",
+      "wallId": "w4",
+      "offset": 2,
+      "width": 1.2,
+      "height": 1.2,
+      "sillHeight": 1
+    },
+    {
+      "id": "win4",
+      "wallId": "w2",
+      "offset": 2,
+      "width": 1.2,
+      "height": 1.2,
+      "sillHeight": 1
+    }
+  ]
+}
