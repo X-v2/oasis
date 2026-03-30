@@ -1,0 +1,706 @@
+/* Oasis Structures - Architectural, Earthy, Solid aesthetic */
+
+.page {
+  --o-bg: var(--bg-base);
+  --o-surface: var(--bg-raised);
+  --o-surface-dark: var(--bg-sunken);
+  --o-text-main: var(--fg-primary);
+  --o-text-muted: var(--fg-secondary);
+  --o-accent: var(--primary-600);
+  --o-accent-dark: var(--primary-500);
+  --o-highlight: var(--primary-400);
+  --o-border: var(--border-subtle);
+  --o-border-strong: var(--border-default);
+  background-color: var(--o-bg);
+  background-image: linear-gradient(var(--o-border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--o-border) 1px, transparent 1px);
+  background-size: 80px 80px;
+  color: var(--o-text-main);
+  min-height: 100vh;
+  overflow: clip;
+  font-family: var(--font-sans), sans-serif;
+}
+
+.themeDock {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.shell {
+  width: min(1280px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+/* HERO SECTION */
+.hero {
+  padding: 8vh 0 60px;
+  position: relative;
+  border-bottom: 2px solid var(--o-border-strong);
+  background: linear-gradient(180deg, var(--o-surface) 0%, transparent 400px);
+}
+
+.heroGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.02fr) minmax(460px, 0.98fr);
+  align-items: stretch;
+  gap: clamp(32px, 4vw, 64px);
+  width: min(1320px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.heroContent {
+  min-width: 0;
+  padding: clamp(40px, 4vw, 72px) clamp(20px, 3vw, 40px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.brandTag {
+  display: inline-block;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--o-accent);
+  padding: 8px 16px;
+  margin-bottom: 32px;
+  font-weight: 600;
+  box-shadow: 4px 4px 0 var(--o-accent-dark);
+}
+
+.heroTitle {
+  font-family: var(--font-display), serif;
+  font-size: clamp(3.2rem, 5.5vw, 5rem);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  margin: 0 0 24px;
+  color: var(--o-text-main);
+}
+
+.heroTitleAccent {
+  display: block;
+  font-style: italic;
+  font-weight: 400;
+  color: var(--o-accent);
+}
+
+.heroBody {
+  font-size: 1.15rem;
+  line-height: 1.7;
+  color: var(--o-text-muted);
+  max-width: 50ch;
+  margin: 0 0 40px;
+}
+
+/* SOLID BUTTONS - No generic floating */
+.heroActions {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 48px;
+}
+
+.buttonSolid,
+.buttonOutline,
+.buttonTerminal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 56px;
+  padding: 0 32px;
+  font-weight: 600;
+  font-size: 1rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-family: var(--font-mono), monospace;
+  transition: all 150ms cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  text-decoration: none;
+}
+
+.buttonSolid {
+  background: var(--o-accent);
+  color: #fff;
+  border: 2px solid var(--o-accent);
+}
+
+.buttonSolid:hover {
+  background: transparent;
+  color: var(--o-text-main);
+  transform: translate(2px, 2px);
+  box-shadow: -4px -4px 0 var(--o-accent);
+}
+
+.buttonOutline {
+  background: transparent;
+  color: var(--o-text-main);
+  border: 2px solid var(--o-border-strong);
+}
+
+.buttonOutline:hover {
+  background: var(--o-surface-dark);
+  border-color: var(--o-text-main);
+}
+
+/* Data blocks instead of floating cards */
+.statusGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  border-top: 2px solid var(--o-border);
+  padding-top: 32px;
+}
+
+.statusBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.statusLabel {
+  font-family: var(--font-mono), monospace;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--o-text-muted);
+  letter-spacing: 0.05em;
+}
+
+.statusValue {
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--o-text-main);
+}
+
+/* IMMERSIVE VISUALIZER instead of starry gradient stage */
+.heroVisualizer {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: var(--o-surface);
+  border-left: 2px solid var(--o-border-strong);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.visualizerContainer {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 620px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
+  perspective-origin: 52% 36%;
+}
+
+/* Isometric Block Base */
+.architecturalBlock {
+  position: relative;
+  --block-size: clamp(220px, 22vw, 320px);
+  --block-depth: calc(var(--block-size) * 0.5);
+  width: var(--block-size);
+  height: var(--block-size);
+  transform: rotateX(58deg) rotateZ(-45deg);
+  transform-origin: center center;
+  transform-style: preserve-3d;
+  will-change: transform;
+  animation: slowBuild 12s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+}
+
+.blockFaceTop,
+.blockFaceLeft,
+.blockFaceRight {
+  position: absolute;
+  background: var(--o-surface-dark);
+  border: 2px solid var(--o-text-main);
+}
+
+.blockFaceTop {
+  width: var(--block-size);
+  height: var(--block-size);
+  top: 0;
+  left: 0;
+  background: var(--o-text-main);
+  transform: translateZ(var(--block-depth));
+  opacity: 0.05;
+  animation: topPulse 12s cubic-bezier(0.37, 0, 0.63, 1) infinite alternate;
+}
+
+.blockFaceLeft {
+  width: var(--block-size);
+  height: var(--block-depth);
+  top: 100%;
+  left: 0;
+  transform-origin: top;
+  transform: rotateX(-90deg);
+  background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, var(--o-border) 10px, var(--o-border) 12px);
+}
+
+.blockFaceRight {
+  width: var(--block-depth);
+  height: var(--block-size);
+  top: 0;
+  left: 100%;
+  transform-origin: left;
+  transform: rotateY(90deg);
+}
+
+.measureLineH,
+.measureLineV {
+  position: absolute;
+  background: rgba(181, 74, 42, 0.72);
+  box-shadow: 0 0 0 1px rgba(28, 28, 26, 0.16);
+}
+
+.measureLineH {
+  top: calc(var(--block-size) * -0.14);
+  left: calc(var(--block-size) * -0.12);
+  width: calc(var(--block-size) * 1.3);
+  height: 2px;
+}
+
+.measureLineV {
+  right: calc(var(--block-size) * -0.16);
+  top: calc(var(--block-size) * -0.08);
+  width: 2px;
+  height: calc(var(--block-size) * 1.18);
+}
+
+.measureLineH::before,
+.measureLineH::after,
+.measureLineV::before,
+.measureLineV::after {
+  content: "";
+  position: absolute;
+  background: var(--o-accent);
+}
+
+.measureLineH::before,
+.measureLineH::after {
+  width: 2px;
+  height: 12px;
+  top: -5px;
+}
+
+.measureLineH::before {
+  left: 0;
+}
+
+.measureLineH::after {
+  right: 0;
+}
+
+.measureLineV::before,
+.measureLineV::after {
+  width: 12px;
+  height: 2px;
+  left: -5px;
+}
+
+.measureLineV::before {
+  top: 0;
+}
+
+.measureLineV::after {
+  bottom: 0;
+}
+
+.measureText {
+  position: absolute;
+  padding: 4px 10px;
+  background: var(--o-bg);
+  border: 1px solid var(--o-text-main);
+  color: var(--o-text-main);
+  font-family: var(--font-mono), monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.measureLineH .measureText {
+  left: 50%;
+  top: -34px;
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.measureLineV .measureText {
+  left: 18px;
+  top: 50%;
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.structuralGrid {
+  position: absolute;
+  inset: 10%;
+  border: 1px solid rgba(181, 74, 42, 0.4);
+  background-image:
+    linear-gradient(rgba(181, 74, 42, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(181, 74, 42, 0.12) 1px, transparent 1px);
+  background-size: 18px 18px;
+  transform: translateZ(calc(var(--block-depth) + 2px));
+  animation: gridPulse 12s ease-in-out infinite alternate;
+}
+
+.loadPoint,
+.loadPointAlt {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border-radius: 999px;
+  background: var(--o-accent);
+  border: 2px solid var(--o-bg);
+  box-shadow: 0 0 0 8px rgba(181, 74, 42, 0.18);
+  transform: translateZ(calc(var(--block-depth) + 3px));
+  animation: pointPulse 2.4s ease-in-out infinite;
+}
+
+.loadPoint {
+  top: 28%;
+  left: 24%;
+}
+
+.loadPointAlt {
+  right: 24%;
+  bottom: 22%;
+}
+
+/* Technical Overlays */
+.overlayData {
+  position: absolute;
+  bottom: 32px;
+  right: 32px;
+  background: var(--o-bg);
+  border: 2px solid var(--o-text-main);
+  padding: 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-shadow: 8px 8px 0 var(--o-accent);
+}
+
+.dataRow {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.85rem;
+}
+
+.dataRow span:first-child {
+  color: var(--o-text-muted);
+}
+
+.dataRow span:last-child {
+  color: var(--o-text-main);
+  font-weight: 600;
+}
+
+.statusGood {
+  color: var(--o-accent) !important;
+}
+
+/* SECTION STRUCTURES */
+.sectionHeader {
+  margin-bottom: 60px;
+  max-width: 600px;
+}
+
+.sectionTitle {
+  font-family: var(--font-display), serif;
+  font-size: 3rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+  letter-spacing: -0.02em;
+}
+
+.sectionBody {
+  font-size: 1.1rem;
+  color: var(--o-text-muted);
+  line-height: 1.6;
+}
+
+/* METHODOLOGY (Replacing workflow cards) */
+.methodology {
+  padding: 120px 0;
+  background: var(--o-bg);
+}
+
+.workflowGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 2px; /* For the "border" effect between solid blocks */
+  background: var(--o-border-strong);
+  border: 2px solid var(--o-text-main);
+}
+
+.workflowBlock {
+  background: var(--o-bg);
+  padding: 40px 48px;
+  display: grid;
+  grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+  gap: clamp(28px, 4vw, 64px);
+  align-items: start;
+  transition: background 300ms ease;
+}
+
+.workflowBlock:hover {
+  background: var(--o-surface);
+}
+
+.blockHead {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.stepMarker {
+  font-family: var(--font-mono), monospace;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--o-accent);
+}
+
+.blockTitle {
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.blockBody {
+  font-size: 1.1rem;
+  color: var(--o-text-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* CAPABILITIES */
+.capabilities {
+  padding: 120px 0;
+  background: var(--o-surface);
+  border-top: 2px solid var(--o-border-strong);
+}
+
+.capGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+
+.capBlock {
+  background: var(--o-bg);
+  border: 2px solid var(--o-border);
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 200ms ease, transform 200ms ease;
+}
+
+.capBlock:hover {
+  border-color: var(--o-text-main);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.05); /* very soft shadow for depth */
+}
+
+.capTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+}
+
+.capBody {
+  color: var(--o-text-muted);
+  line-height: 1.6;
+  margin: 0 0 32px;
+  flex-grow: 1;
+}
+
+.capList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.capList li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-family: var(--font-mono), monospace;
+  font-size: 0.85rem;
+  color: var(--o-text-main);
+  line-height: 1.4;
+}
+
+.capBullet {
+  width: 8px;
+  height: 8px;
+  background: var(--o-accent);
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+
+/* TERMINAL / CTAs */
+.terminal {
+  padding: 0 0 120px;
+  background: var(--o-surface);
+}
+
+.terminalContainer {
+  width: min(1000px, calc(100% - 48px));
+  margin: 0 auto;
+}
+
+.terminalInner {
+  background: var(--o-text-main);
+  color: var(--o-bg);
+  padding: 80px 60px;
+  text-align: center;
+  border: 2px solid var(--o-accent);
+  box-shadow: 16px 16px 0 var(--o-surface-dark);
+}
+
+.terminalTitle {
+  font-family: var(--font-display), serif;
+  font-size: 3.5rem;
+  margin: 0 0 20px;
+  font-weight: 700;
+  color: var(--o-bg);
+}
+
+.terminalBody {
+  font-size: 1.2rem;
+  color: #a4a395; /* var(--o-border-strong) */
+  margin: 0 auto 48px;
+  max-width: 500px;
+}
+
+.buttonTerminal {
+  background: var(--o-accent);
+  color: var(--o-bg);
+  border: 2px solid var(--o-accent);
+}
+
+.buttonTerminal:hover {
+  background: transparent;
+  color: var(--o-accent);
+}
+
+@keyframes slowBuild {
+  0% { transform: rotateX(58deg) rotateZ(-45deg) translate3d(0, 0, 0); }
+  100% { transform: rotateX(61deg) rotateZ(-42deg) translate3d(0, -8px, 0); }
+}
+
+@keyframes topPulse {
+  0% { transform: translateZ(var(--block-depth)); opacity: 0.05; }
+  100% { transform: translateZ(calc(var(--block-depth) + 6px)); opacity: 0.09; }
+}
+
+@keyframes gridPulse {
+  0% { transform: translateZ(calc(var(--block-depth) + 2px)); opacity: 0.78; }
+  100% { transform: translateZ(calc(var(--block-depth) + 6px)); opacity: 1; }
+}
+
+@keyframes pointPulse {
+  0% { box-shadow: 0 0 0 8px rgba(181, 74, 42, 0.16); }
+  100% { box-shadow: 0 0 0 14px rgba(181, 74, 42, 0.3); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .architecturalBlock,
+  .blockFaceTop,
+  .structuralGrid,
+  .loadPoint,
+  .loadPointAlt {
+    animation: none !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .heroGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .heroVisualizer {
+    border-left: none;
+    border-top: 2px solid var(--o-border-strong);
+    padding: 60px 20px;
+  }
+
+  .visualizerContainer {
+    min-height: 500px;
+  }
+  
+  .workflowBlock {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .capGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .themeDock {
+    top: 10px;
+    right: 10px;
+  }
+
+  .capGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .statusGrid {
+    grid-template-columns: 1fr;
+  }
+  
+  .heroContent {
+    padding: 40px 20px;
+  }
+  
+  .heroTitle {
+    font-size: clamp(2rem, 10vw, 3rem);
+  }
+
+  .heroActions {
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .buttonSolid,
+  .buttonOutline {
+    width: 100%;
+  }
+
+  .visualizerContainer {
+    min-height: 380px;
+  }
+
+  .architecturalBlock {
+    --block-size: 180px;
+  }
+
+  .overlayData {
+    position: static;
+    margin-top: 28px;
+    width: min(100%, 320px);
+  }
+  
+  .terminalInner {
+    padding: 60px 30px;
+  }
+}

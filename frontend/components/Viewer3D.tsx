@@ -15,6 +15,12 @@ import Openings from "./Openings";
 import SlabMesh from "./SlabMesh";
 import WallMesh from "./WallMesh";
 
+declare global {
+  interface Window {
+    __sisCaptureModelScreenshots?: () => Promise<Array<{ title: string; dataUri: string }>>;
+  }
+}
+
 type Viewer3DProps = {
   data: SceneData;
   selectedEntity: SceneSelection | null;
@@ -322,6 +328,85 @@ function InteractionLayer({
   return null;
 }
 
+function ScreenshotBridge({ data }: { data: SceneData }) {
+  const { camera, gl, scene, controls } = useThree();
+
+  useEffect(() => {
+    async function capture() {
+      const centerX = data.bounds.center[0];
+      const centerZ = data.bounds.center[2];
+      const maxDimension = Math.max(data.bounds.width, data.bounds.depth, 8);
+
+      const orbit = controls as { target?: Vector3; update?: () => void } | undefined;
+      const originalPosition = camera.position.clone();
+      const originalTarget = orbit?.target?.clone();
+
+      const presets = [
+        {
+          title: "Perspective View",
+          position: [centerX + maxDimension * 0.95, Math.max(8, maxDimension * 0.82), centerZ + maxDimension * 0.88] as const,
+        },
+        {
+          title: "Side Elevation View",
+          position: [centerX + maxDimension * 1.2, Math.max(6.5, maxDimension * 0.62), centerZ] as const,
+        },
+        {
+          title: "Top-Angle View",
+          position: [centerX, Math.max(10, maxDimension * 1.4), centerZ + maxDimension * 0.18] as const,
+        },
+        {
+          title: "Front Elevation View",
+          position: [centerX, Math.max(6.2, maxDimension * 0.58), centerZ + maxDimension * 1.18] as const,
+        },
+      ];
+
+      const shots: Array<{ title: string; dataUri: string }> = [];
+      for (const preset of presets) {
+        camera.position.set(preset.position[0], preset.position[1], preset.position[2]);
+        camera.lookAt(centerX, 0.8, centerZ);
+        camera.updateProjectionMatrix();
+        if (orbit?.target) {
+          orbit.target.set(centerX, 0.8, centerZ);
+          orbit.update?.();
+        }
+
+        await new Promise<void>((resolve) => {
+          requestAnimationFrame(() => {
+            gl.render(scene, camera);
+            resolve();
+          });
+        });
+
+        shots.push({
+          title: preset.title,
+          dataUri: gl.domElement.toDataURL("image/png"),
+        });
+      }
+
+      camera.position.copy(originalPosition);
+      if (orbit?.target && originalTarget) {
+        orbit.target.copy(originalTarget);
+        orbit.update?.();
+      } else {
+        camera.lookAt(centerX, 0.8, centerZ);
+      }
+      camera.updateProjectionMatrix();
+      gl.render(scene, camera);
+
+      return shots;
+    }
+
+    window.__sisCaptureModelScreenshots = capture;
+    return () => {
+      if (window.__sisCaptureModelScreenshots === capture) {
+        delete window.__sisCaptureModelScreenshots;
+      }
+    };
+  }, [camera, controls, data.bounds.center, data.bounds.depth, data.bounds.width, gl, scene]);
+
+  return null;
+}
+
 function SceneContent(props: Viewer3DProps) {
   const { data, selectedEntity, structuralView, debugOverlay, darkMode } = props;
   const selectedWallId = selectedEntity?.type === "wall" ? selectedEntity.id : null;
@@ -561,13 +646,12 @@ export default function Viewer3D(props: Viewer3DProps) {
           : "border-black/[0.08] bg-[#edeae3] shadow-[0_20px_60px_-20px_rgba(0,0,0,0.18)]"
       }`}
       style={{ height: "clamp(380px, calc(100vh - 14rem), 720px)" }}
-      onPointerDown={activateInteraction}
     >
       <Canvas
         shadows={{ type: PCFShadowMap }}
         camera={{ fov: 42, near: 0.4, far: 140, position: [12, 10, 12] }}
         dpr={[1, 1.5]}
-        gl={{ antialias: true, powerPreference: "high-performance", alpha: false, preserveDrawingBuffer: false }}
+        gl={{ antialias: true, powerPreference: "high-performance", alpha: false, preserveDrawingBuffer: true }}
         frameloop="demand"
       >
         <InteractionLayer
@@ -578,6 +662,7 @@ export default function Viewer3D(props: Viewer3DProps) {
         />
         <CameraRig data={props.data} />
         <FocusGuide focusPoint={props.focusPoint} focusToken={props.focusToken} bounds={props.data.bounds} />
+        <ScreenshotBridge data={props.data} />
         <Axes debugOverlay={props.debugOverlay} />
         <SceneContent {...props} />
         <OrbitControls
@@ -596,8 +681,17 @@ export default function Viewer3D(props: Viewer3DProps) {
       </Canvas>
       {!interactionEnabled && (
         <div
-          className="pointer-events-none absolute inset-0 flex items-center justify-center"
+          className="absolute inset-0 z-10 flex items-center justify-center"
           style={{ background: props.darkMode ? "rgba(14,12,22,0.32)" : "rgba(255,255,255,0.22)" }}
+          onClick={activateInteraction}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(event) => {
+            if (event.key === "Enter" || event.key === " ") {
+              event.preventDefault();
+              activateInteraction();
+            }
+          }}
         >
           <div style={{
             borderRadius: 10,
@@ -610,6 +704,7 @@ export default function Viewer3D(props: Viewer3DProps) {
             letterSpacing: "0.14em",
             textTransform: "uppercase" as const,
             color: props.darkMode ? "rgba(220,210,255,0.9)" : "rgba(60,55,50,0.9)",
+            cursor: "pointer",
           }}>
             Click to enable 3D controls
           </div>
@@ -663,7 +758,7 @@ export default function Viewer3D(props: Viewer3DProps) {
         3D Viewer
       </div>
       {/* Pick mode controls — top right */}
-      <div style={{ position: "absolute", right: 12, top: 12, zIndex: 20, display: "flex", gap: 4 }}>
+      <div style={{ position: "absolute", right: 12, top: 12, zIndex: 20, display: "flex", flexWrap: "wrap", justifyContent: "flex-end", maxWidth: 180, gap: 6 }}>
         {(["auto", "walls", "nodes"] as const).map((mode) => (
           <button
             key={mode}
@@ -678,7 +773,7 @@ export default function Viewer3D(props: Viewer3DProps) {
                 ? (props.darkMode ? "rgba(80,160,240,0.18)" : "rgba(50,130,200,0.12)")
                 : (props.darkMode ? "rgba(14,12,22,0.7)" : "rgba(255,254,250,0.8)"),
               backdropFilter: "blur(8px)",
-              padding: "4px 10px",
+              padding: "8px 12px",
               fontSize: 10,
               fontWeight: 600,
               letterSpacing: "0.1em",

@@ -354,6 +354,74 @@ export type RecommendationApiResponse = {
   heuristics: HeuristicReport;
 };
 
+export type CostReportElementType =
+  | "load_bearing_wall"
+  | "partition_wall"
+  | "slab"
+  | "column"
+  | "beam";
+
+export type CostUnit = "m3" | "m2" | "nos";
+
+export type CostLineItem = {
+  elementId: string;
+  elementType: CostReportElementType;
+  material: string;
+  quantity: number;
+  unit: CostUnit;
+  unitRate: number;
+  baseCost: number;
+  wastageFactor: number;
+  wastageAllowance: number;
+  subtotal: number;
+  confidence: number;
+  justification: string;
+  assumptions: string[];
+};
+
+export type MaterialPricingEntry = {
+  unit: CostUnit;
+  rate: number;
+};
+
+export type MaterialCatalogEntry = {
+  unit: CostUnit;
+  rate: number;
+  strength: number;
+  durability: number;
+};
+
+export type CostReport = {
+  projectName: string;
+  currency: string;
+  generatedAt: string;
+  scenarioId?: string;
+  scenarioLabel?: string;
+  scenarioDescription?: string;
+  summary: {
+    totalCost: number;
+    totalArea?: number;
+    costPerSqm?: number;
+  };
+  items: CostLineItem[];
+  materialTotals: Record<string, number>;
+  materialCatalog: Record<string, MaterialCatalogEntry>;
+  assumptions: string[];
+  warnings: string[];
+};
+
+export type CostScenarioOption = {
+  id: string;
+  label: string;
+  description: string;
+  report: CostReport;
+};
+
+export type CostReportOptionsResponse = {
+  generatedAt: string;
+  options: CostScenarioOption[];
+};
+
 export type SpanPreviewLine = {
   id: string;
   roomId?: string;
