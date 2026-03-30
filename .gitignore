@@ -1,0 +1,35 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual Environments
+venv/
+env/
+.env/
+ENV/
+bin/
+lib/
+include/
+
+# Environment variables (Sensitive Data)
+.env
+.flaskenv
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Testing and coverage
+.tox/
+.coverage
+htmlcov/
+.pytest_cache/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# IDE Specific (VS Code, PyCharm)
+.vscode/
+.idea/
